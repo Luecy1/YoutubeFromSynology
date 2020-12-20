@@ -43,21 +43,23 @@ class SheetsQuickstart {
 fun main() {
     // Build a new authorized API client service.
     val HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport()
-    val spreadsheetId = "1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms"
-    val range = "Class Data!A2:E"
+    val spreadsheetId = "1jrAdp0qSmWujKHG8CkZ8FZYnPDDLeawsRlY1lyNsmXc"
     val service = Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, SheetsQuickstart().getCredentials(HTTP_TRANSPORT))
         .setApplicationName(APPLICATION_NAME)
         .build()
-    val response = service.spreadsheets().values()[spreadsheetId, range]
-        .execute()
-    val values = response.getValues()
-    if (values == null || values.isEmpty()) {
-        println("No data found.")
-    } else {
-        println("Name, Major")
-        for (row in values) {
-            // Print columns A and E, which correspond to indices 0 and 4.
-            System.out.printf("%s, %s\n", row[0], row[4])
+
+    val response = service.Spreadsheets().Values().get(spreadsheetId, "Sheet1!A:A").execute()
+    println(response)
+    val values = response.values
+    for (value in values) {
+        if (value is ArrayList<*>) {
+            for (one in value) {
+                if (one is ArrayList<*>) {
+                    one.forEach {
+                        println("$it")
+                    }
+                }
+            }
         }
     }
 }
