@@ -1,4 +1,4 @@
 interface DownloadCommand {
 
-    fun download(urlList: List<String>)
+    fun download(url: String)
 }

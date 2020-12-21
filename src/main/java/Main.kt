@@ -1,14 +1,25 @@
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
+import sheet.FetchUrlMock
 
-class Main {
+class Main(
+    private val urlDownloader: FetchUrl,
+    private val command: DownloadCommand,
+) {
     private val logger: Logger = LogManager.getLogger(Main::class.java.name)
 
-    fun printLogger() {
-        logger.info("hello!")
+    operator fun invoke() {
+        logger.info("invoke start")
+
+        val urls = urlDownloader.fetchUrls()
+        for (url in urls) {
+            command.download(url)
+        }
+
+        logger.info("invoke end")
     }
 }
 
 fun main() {
-    Main().printLogger()
+    Main(FetchUrlMock(), DownloadCommandMock())()
 }
