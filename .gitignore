@@ -107,3 +107,4 @@ Temporary Items
 
 /src/main/resources/credentials.json
 /tokens/StoredCredential
+/event.log

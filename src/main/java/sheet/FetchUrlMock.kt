@@ -4,6 +4,6 @@ import FetchUrl
 
 class FetchUrlMock : FetchUrl {
     override fun fetchUrls(): List<String> {
-        return listOf("http://hogehoge")
+        return listOf("https://www.youtube.com/watch?v=s1WUaDjlKDI")
     }
 }

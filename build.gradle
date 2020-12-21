@@ -26,6 +26,10 @@ dependencies {
 
 jar {
     manifest {
-        attributes 'Main-Class': 'MainKt'
+//        attributes 'Main-Class': 'MainKt'
+        attributes 'Main-Class': 'SheetsQuickstartKt'
     }
+}
+shadowJar {
+    archiveFileName = "YoutubeFromSynology.jar"
 }
