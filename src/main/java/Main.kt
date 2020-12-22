@@ -21,5 +21,5 @@ class Main(
 }
 
 fun main() {
-    Main(FetchUrlMock(), DownloadCommandMock())()
+    Main(FetchUrlMock(), DownloadCommandImpl())()
 }
