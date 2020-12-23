@@ -21,5 +21,15 @@ class Main(
 }
 
 fun main() {
-    Main(FetchUrlMock(), DownloadCommandImpl())()
+
+    val downloadCommand =
+        if (System.getProperty("isSynology") == "true") {
+            // production
+            DownloadCommandImpl()
+        } else {
+            // local
+            DownloadCommandMock()
+        }
+
+    Main(FetchUrlMock(), downloadCommand)()
 }

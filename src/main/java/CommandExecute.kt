@@ -4,6 +4,7 @@ fun execute(vararg command: String): List<String> {
 
     val process = ProcessBuilder(*command).start()
 
+    // TODO use property
     process.waitFor(10, TimeUnit.MINUTES)
 
     return process.inputStream.bufferedReader().readLines()
