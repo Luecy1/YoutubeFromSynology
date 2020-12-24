@@ -10,11 +10,14 @@ import com.google.api.client.json.jackson2.JacksonFactory
 import com.google.api.client.util.store.FileDataStoreFactory
 import com.google.api.services.sheets.v4.Sheets
 import com.google.api.services.sheets.v4.SheetsScopes
+import com.google.api.services.sheets.v4.model.ValueRange
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.InputStreamReader
+import java.util.*
+
 
 private const val APPLICATION_NAME = "Google Sheets API Java Quickstart"
 private val JSON_FACTORY: JsonFactory = JacksonFactory.getDefaultInstance()
@@ -48,14 +51,14 @@ class CredentialProvider {
 class FetchUrlImpl : FetchUrl {
     private val logger: Logger = LogManager.getLogger(FetchUrlImpl::class.java.name)
 
+    // Build a new authorized API client service.
+    private val service: Sheets =
+        Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, CredentialProvider().getCredentials(HTTP_TRANSPORT))
+            .setApplicationName(APPLICATION_NAME)
+            .build()
+
     override fun fetchUrls(): List<String> {
         try {
-            // Build a new authorized API client service.
-            val service =
-                Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, CredentialProvider().getCredentials(HTTP_TRANSPORT))
-                    .setApplicationName(APPLICATION_NAME)
-                    .build()
-
             return fetchSheetsData(service)
         } catch (e: Exception) {
             logger.error(e)
@@ -83,8 +86,21 @@ class FetchUrlImpl : FetchUrl {
         logger.debug(result)
         return result
     }
+
+    fun deleteLine(line: Int) {
+
+        val values = (0 until line).map {
+            listOf("")
+        }
+
+        val body: ValueRange = ValueRange()
+            .setValues(values)
+        val result = service.spreadsheets().values().update(spreadsheetId, "Sheet1!A1", body)
+            .setValueInputOption("RAW")
+            .execute()
+    }
 }
 
 fun main() {
-    FetchUrlImpl().fetchUrls()
+    FetchUrlImpl().deleteLine(3)
 }
