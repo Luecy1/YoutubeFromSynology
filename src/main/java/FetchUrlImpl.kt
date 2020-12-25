@@ -18,16 +18,19 @@ import java.io.FileNotFoundException
 import java.io.InputStreamReader
 import java.util.*
 
-
+// TODO better naming rename
 private const val APPLICATION_NAME = "Google Sheets API Java Quickstart"
-private val JSON_FACTORY: JsonFactory = JacksonFactory.getDefaultInstance()
-private const val TOKENS_DIRECTORY_PATH = "tokens"
-val HTTP_TRANSPORT: NetHttpTransport = GoogleNetHttpTransport.newTrustedTransport()
+private const val USER_ID = "user"
 
+// This sheets is not published.
+const val spreadsheetId = "1jrAdp0qSmWujKHG8CkZ8FZYnPDDLeawsRlY1lyNsmXc"
 private val SCOPES = listOf(SheetsScopes.SPREADSHEETS)
+
+val HTTP_TRANSPORT: NetHttpTransport = GoogleNetHttpTransport.newTrustedTransport()
+private const val TOKENS_DIRECTORY_PATH = "tokens"
 private const val CREDENTIALS_FILE_PATH = "/credentials.json"
 
-const val spreadsheetId = "1jrAdp0qSmWujKHG8CkZ8FZYnPDDLeawsRlY1lyNsmXc"
+private val JSON_FACTORY: JsonFactory = JacksonFactory.getDefaultInstance()
 
 class CredentialProvider {
     fun getCredentials(HTTP_TRANSPORT: NetHttpTransport): Credential {
@@ -44,7 +47,7 @@ class CredentialProvider {
             .setAccessType("offline")
             .build()
         val receiver = LocalServerReceiver.Builder().setPort(8888).build()
-        return AuthorizationCodeInstalledApp(flow, receiver).authorize("user")
+        return AuthorizationCodeInstalledApp(flow, receiver).authorize(USER_ID)
     }
 }
 
